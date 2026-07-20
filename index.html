@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TEMMS - RCCG Trinity Excellence Zonal Headquarters</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+
+<!-- ================= WELCOME PAGE ================= -->
+
+<section id="welcomePage" class="page active">
+
+
+    <div class="logo-container">
+
+        <img src="church-logo.png" 
+             class="logo" 
+             alt="RCCG Logo">
+
+
+        <img src="trinity-logo.png" 
+             class="logo" 
+             alt="Trinity Excellence Logo">
+
+
+    </div>
+
+
+
+    <h1>
+        THE REDEEMED CHRISTIAN CHURCH OF GOD
+    </h1>
+
+
+    <h2>
+        RCCG TRINITY EXCELLENCE ZONAL HEADQUARTERS
+    </h2>
+
+
+    <h3>
+        OYO PROVINCE 13 | REGION 60
+    </h3>
+
+
+
+    <p class="welcome-text">
+
+        Welcome to the Trinity Excellence Family.
+
+        <br><br>
+
+        Kindly complete the registration form with your correct details.
+
+    </p>
+
+
+
+    <button id="startBtn">
+
+        Start Registration
+
+    </button>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ================= REGISTRATION PAGE ================= -->
+
+
+<section id="formPage" class="page">
+
+
+<h2>
+    Church Member Registration
+</h2>
+
+
+
+<form id="memberForm">
+
+
+
+<div class="form-group">
+
+
+<label>
+Full Name <span class="required">*</span>
+</label>
+
+
+<input
+type="text"
+id="fullname"
+placeholder="Enter your full name"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>
+Mobile Number <span class="required">*</span>
+</label>
+
+<input
+type="tel"
+id="phone"
+placeholder="e.g. +234 801 234 5678"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>
+Email Address <small>(Optional)</small>
+</label>
+
+<input
+type="email"
+id="email"
+placeholder="example@email.com">
+
+</div>
+
+<div class="form-group">
+
+<label>
+Date of Birth <span class="required">*</span>
+</label>
+
+<input
+type="date"
+id="dob"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>
+Gender <span class="required">*</span>
+</label>
+
+
+<select id="gender" required>
+
+
+<option value="">
+Select Gender
+</option>
+
+
+<option>
+Male
+</option>
+
+
+<option>
+Female
+</option>
+
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+
+<label>
+Residential Address <span class="required">*</span>
+</label>
+
+
+<textarea
+id="address"
+rows="4"
+placeholder="Enter your residential address"
+required></textarea>
+
+
+</div>
+<!-- ================= DEPARTMENT ================= -->
+
+
+<div class="form-group">
+
+
+    <label>
+    
+    Are you in any department?
+    
+    </label>
+    
+    
+    
+    <div class="radio-group">
+    
+    
+    <label>
+    
+    <input
+    type="radio"
+    id="deptYes"
+    name="departmentStatus"
+    value="yes">
+    
+    Yes
+    
+    </label>
+    
+
+    
+    <label>
+    
+    <input
+    type="radio"
+    id="deptNo"
+    name="departmentStatus"
+    value="no">
+    
+    No
+    
+    </label>
+    
+    
+    </div>
+    
+    
+    </div>
+    
+    
+    
+    
+    
+    <div id="departmentSection" 
+    class="form-group" 
+    style="display:none;">
+    
+    
+    <label>
+    
+    Select Department(s)
+    
+    </label>
+    
+    
+    
+    <div class="checkbox-group">
+    
+    
+    <label>
+    <input type="checkbox" name="department" value="Choir">
+    Choir
+    </label>
+    
+    
+    <label>
+    <input type="checkbox" name="department" value="Ushering and Protocol">
+    Ushering & Protocol
+    </label>
+    
+    
+    <label>
+    <input type="checkbox" name="department" value="Evangelism">
+    Evangelism
+    </label>
+    
+    
+    <label>
+    <input type="checkbox" name="department" value="Sunday School">
+    Sunday School
+    </label>
+    
+    
+    <label>
+    <input type="checkbox" name="department" value="Sanitation">
+    Sanitation
+    </label>
+    
+    
+    <label>
+    <input type="checkbox" name="department" value="Media">
+    Media
+    </label>
+    
+    
+    <label>
+    <input type="checkbox" name="department" value="Redeem Volunteers (RV)">
+    Redeem Volunteers (RV)
+    </label>
+    
+    
+    <label>
+    <input type="checkbox" name="department" value="Drama">
+    Drama
+    </label>
+    
+    
+    <label>
+    <input type="checkbox" name="department" value="Children Unit">
+    Children Unit
+    </label>
+    
+    
+    <label>
+    <input type="checkbox" name="department" value="Welfare">
+    Welfare
+    </label>
+    
+    
+    <label>
+    <input type="checkbox" name="department" value="Technical">
+    Technical
+    </label>
+    
+    
+    <label>
+    <input type="checkbox" name="department" value="Prayer">
+    Prayer
+    </label>
+    
+    
+    </div>
+    
+    
+    </div>
+    
+    
+    
+    
+    
+
+    <!-- ================= PASSPORT ================= -->
+    
+    
+    <div class="form-group">
+    
+    
+    <label>
+    
+    Passport Photograph <span class="required">*</span>
+    
+    </label>
+    
+    
+    
+    <input
+    type="file"
+    id="picture"
+    accept="image/*"
+    capture="user"
+    required>
+    
+    
+    
+    
+    <div class="image-preview">
+    
+    
+    <img
+    id="previewImage"
+    src=""
+    alt="Passport Preview">
+    
+    
+    </div>
+    
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    <!-- ================= CONFIRMATION ================= -->
+    
+    
+    <div class="form-group">
+    
+    
+    <label class="confirm-label">
+    
+    
+    <input
+    type="checkbox"
+    id="confirmInfo"
+    required>
+    
+    
+    
+    I confirm that the information I have provided is correct.
+    
+    
+    </label>
+    
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    <button
+    type="submit"
+    id="submitBtn"
+    disabled>
+    
+    
+    Submit
+    
+    
+    </button>
+    
+    
+    
+    </form>
+    
+    
+    </section>
+    
+    
+    
+    
+    
+    
+    
+    
+    <!-- ================= SUCCESS PAGE ================= -->
+    
+    
+    <section id="successPage" class="page">
+    
+    
+    <div class="success-icon">
+    
+    ✅
+    
+    </div>
+    
+    
+    
+    <h2>
+    
+    Registration Successful!
+    
+    </h2>
+    
+    
+    
+    
+    <p>
+    
+    Thank you for joining the RCCG Trinity Excellence Family.
+    
+    <br><br>
+    
+    Your registration has been received successfully.
+    
+    </p>
+    
+    
+    
+    
+    <button id="registerAgain">
+    
+    Register Another Member
+    
+    </button>
+    
+    
+    
+    </section>
+    
+    
+    
+    
+    
+    
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    <!-- SCRIPT CONNECTION -->
+    
+    
+    <script type="module" src="firebase.js"></script>
+<script type="module" src="script.js"></script>
+    
+    
+    </body>
+    
+    
+    </html>
