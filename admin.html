@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Church Admin Dashboard</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f5f7fb;
+            padding:30px;
+        }
+
+        h1{
+            color:#0d47a1;
+            margin-bottom:20px;
+        }
+
+        .top{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:20px;
+            flex-wrap:wrap;
+            gap:10px;
+        }
+
+        input{
+            padding:10px;
+            width:300px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        }
+
+        button{
+            padding:10px 15px;
+            background:#0d47a1;
+            color:white;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#1565c0;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+        }
+
+        th,td{
+            padding:12px;
+            border:1px solid #ddd;
+            text-align:left;
+        }
+
+        th{
+            background:#0d47a1;
+            color:white;
+        }
+
+        tr:nth-child(even){
+            background:#f8f8f8;
+        }
+
+        .count{
+            font-size:18px;
+            font-weight:bold;
+            color:#0d47a1;
+            margin-bottom:15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>RCCG Trinity Excellence Admin Dashboard</h1>
+
+<div class="count">
+    Total Members:
+    <span id="totalMembers">0</span>
+</div>
+
+<div class="top">
+    <input
+        type="text"
+        id="search"
+        placeholder="Search member...">
+
+    <button onclick="exportExcel()">
+        Export to Excel
+    </button>
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+
+<th>Phone</th>
+
+<th>Department</th>
+
+<th>Gender</th>
+
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody id="memberTable">
+
+</tbody>
+
+</table>
+
+<script type="module" src="admin.js"></script>
+
+</body>
+</html>
