@@ -45,7 +45,7 @@ function displayMembers(data){
         memberTable.innerHTML += `
         <tr>
 
-        <td>${member.fullname}</td>
+        <td>${member.fullName}</td>
 
         <td>${member.phone}</td>
 
@@ -88,7 +88,7 @@ search.addEventListener("input",()=>{
 
     const filtered = members.filter(member=>
 
-        member.fullname.toLowerCase().includes(value)
+        member.fullName.toLowerCase().includes(value)
 
     );
 
