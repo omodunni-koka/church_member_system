@@ -3,19 +3,12 @@
 // RCCG Trinity Excellence Registration
 // ================================
 
-import { db, storage } from "./firebase.js";
-
+import { db } from "./firebase.js";
 import {
-    collection,
-    addDoc,
-    serverTimestamp
+  collection,
+  addDoc,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import {
-    ref,
-    uploadBytes,
-    getDownloadURL
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 
 // ================================
@@ -121,7 +114,7 @@ picture.addEventListener("change", () => {
 
     const file = picture.files[0];
 
-    if (file) {
+    if(file){
 
         previewImage.src = URL.createObjectURL(file);
         previewImage.style.display = "block";
@@ -139,7 +132,6 @@ memberForm.addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
-    // Department validation
     let departmentValue = "";
 
     if (deptNo.checked) {
@@ -150,13 +142,11 @@ memberForm.addEventListener("submit", async (e) => {
 
         const selectedDepartments = [];
 
-        document
-            .querySelectorAll('input[name="department"]:checked')
-            .forEach(dept => {
+        document.querySelectorAll('input[name="department"]:checked').forEach(dept => {
 
-                selectedDepartments.push(dept.value);
+            selectedDepartments.push(dept.value);
 
-            });
+        });
 
         if (selectedDepartments.length === 0) {
 
@@ -178,31 +168,6 @@ memberForm.addEventListener("submit", async (e) => {
     submitBtn.textContent = "Submitting...";
     try {
 
-        // ================================
-        // UPLOAD IMAGE TO FIREBASE STORAGE
-        // ================================
-
-        const file = picture.files[0];
-
-        let imageUrl = "";
-
-        if (file) {
-
-            const storageRef = ref(
-                storage,
-                `members/${Date.now()}_${file.name}`
-            );
-
-            await uploadBytes(storageRef, file);
-
-            imageUrl = await getDownloadURL(storageRef);
-
-        }
-
-        // ================================
-        // SAVE MEMBER TO FIRESTORE
-        // ================================
-
         await addDoc(collection(db, "members"), {
 
             fullName: document.getElementById("fullname").value.trim(),
@@ -219,16 +184,11 @@ memberForm.addEventListener("submit", async (e) => {
 
             department: departmentValue,
 
-            imageUrl: imageUrl,
-
             registeredAt: serverTimestamp()
 
         });
 
-        // ================================
-        // SHOW SUCCESS PAGE
-        // ================================
-
+        // Show success page
         formPage.classList.remove("active");
         successPage.classList.add("active");
 
