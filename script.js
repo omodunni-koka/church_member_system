@@ -3,12 +3,19 @@
 // RCCG Trinity Excellence Registration
 // ================================
 
-import { db } from "./firebase.js";
+import { db, storage } from "./firebase.js";
+
 import {
-  collection,
-  addDoc,
-  serverTimestamp
+    collection,
+    addDoc,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+    ref,
+    uploadBytes,
+    getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 
 // ================================
@@ -114,7 +121,7 @@ picture.addEventListener("change", () => {
 
     const file = picture.files[0];
 
-    if(file){
+    if (file) {
 
         previewImage.src = URL.createObjectURL(file);
         previewImage.style.display = "block";
@@ -122,6 +129,8 @@ picture.addEventListener("change", () => {
     }
 
 });
+
+
 // ================================
 // FORM SUBMISSION
 // ================================
@@ -165,11 +174,34 @@ memberForm.addEventListener("submit", async (e) => {
 
     }
 
-    // Disable button while saving
     submitBtn.disabled = true;
     submitBtn.textContent = "Submitting...";
-
     try {
+
+        // ================================
+        // UPLOAD IMAGE TO FIREBASE STORAGE
+        // ================================
+
+        const file = picture.files[0];
+
+        let imageUrl = "";
+
+        if (file) {
+
+            const storageRef = ref(
+                storage,
+                `members/${Date.now()}_${file.name}`
+            );
+
+            await uploadBytes(storageRef, file);
+
+            imageUrl = await getDownloadURL(storageRef);
+
+        }
+
+        // ================================
+        // SAVE MEMBER TO FIRESTORE
+        // ================================
 
         await addDoc(collection(db, "members"), {
 
@@ -187,11 +219,16 @@ memberForm.addEventListener("submit", async (e) => {
 
             department: departmentValue,
 
+            imageUrl: imageUrl,
+
             registeredAt: serverTimestamp()
 
         });
 
-        // Show success page
+        // ================================
+        // SHOW SUCCESS PAGE
+        // ================================
+
         formPage.classList.remove("active");
         successPage.classList.add("active");
 
