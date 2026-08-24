@@ -353,21 +353,22 @@ memberForm.addEventListener("submit", async (e) => {
         successPage.classList.add("active");
 
 
-    }
 
+    }
     catch (error) {
 
-        console.error("Registration error:", error);
+    console.error("Registration error:", error);
 
-        alert(
-            "Registration failed. Please check your internet connection and try again."
-        );
+    alert(
+        "Registration failed: " + error.message
+    );
 
-        submitBtn.disabled = false;
+    submitBtn.disabled = false;
 
-        submitBtn.textContent = "Submit";
+    submitBtn.textContent = "Submit";
 
-    }
+}
+
 
 });
 
