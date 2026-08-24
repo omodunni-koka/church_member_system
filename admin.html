@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Church Admin Dashboard</title>
+
+    <title>RCCG Trinity Excellence Admin Dashboard</title>
 
     <style>
+
         *{
             margin:0;
             padding:0;
@@ -52,69 +57,137 @@
             background:#1565c0;
         }
 
-        table{
-            width:100%;
-            border-collapse:collapse;
-            background:white;
-        }
-
-        th,td{
-            padding:12px;
-            border:1px solid #ddd;
-            text-align:left;
-        }
-
-        th{
-            background:#0d47a1;
-            color:white;
-        }
-
-        tr:nth-child(even){
-            background:#f8f8f8;
-        }
-
         .count{
             font-size:18px;
             font-weight:bold;
             color:#0d47a1;
             margin-bottom:15px;
         }
+
+        .table-container{
+            width:100%;
+            overflow-x:auto;
+            background:white;
+        }
+
+        table{
+            width:100%;
+            min-width:1100px;
+            border-collapse:collapse;
+            background:white;
+        }
+
+        th,
+        td{
+            padding:12px;
+            border:1px solid #ddd;
+            text-align:left;
+            vertical-align:middle;
+        }
+
+        th{
+            background:#0d47a1;
+            color:white;
+            white-space:nowrap;
+        }
+
+        tr:nth-child(even){
+            background:#f8f8f8;
+        }
+
+        .passport{
+            width:60px;
+            height:60px;
+            object-fit:cover;
+            border-radius:50%;
+            border:2px solid #0d47a1;
+        }
+
+        .no-photo{
+            color:#888;
+            font-size:13px;
+        }
+
+        .delete-btn{
+            background:#d50000;
+        }
+
+        .delete-btn:hover{
+            background:#b71c1c;
+        }
+
+        .empty{
+            text-align:center;
+            padding:30px;
+            color:#777;
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
-<h1>RCCG Trinity Excellence Admin Dashboard</h1>
+
+<h1>
+    RCCG Trinity Excellence Admin Dashboard
+</h1>
+
 
 <div class="count">
+
     Total Members:
     <span id="totalMembers">0</span>
+
 </div>
 
+
 <div class="top">
+
+
     <input
         type="text"
         id="search"
-        placeholder="Search member...">
+        placeholder="Search name, phone or email...">
+
 
     <button onclick="exportExcel()">
+
         Export to Excel
+
     </button>
+
+
 </div>
 
+
+
+<div class="table-container">
+
+
 <table>
+
 
 <thead>
 
 <tr>
 
+<th>Passport</th>
+
 <th>Name</th>
 
 <th>Phone</th>
 
-<th>Department</th>
+<th>Email</th>
+
+<th>Date of Birth</th>
 
 <th>Gender</th>
+
+<th>Address</th>
+
+<th>Department</th>
 
 <th>Actions</th>
 
@@ -122,13 +195,22 @@
 
 </thead>
 
+
 <tbody id="memberTable">
 
 </tbody>
 
+
 </table>
+
+
+</div>
+
+
 
 <script type="module" src="admin.js"></script>
 
+
 </body>
+
 </html>

@@ -4,10 +4,11 @@
 // ================================
 
 import { db } from "./firebase.js";
+
 import {
-  collection,
-  addDoc,
-  serverTimestamp
+    collection,
+    addDoc,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -53,7 +54,7 @@ const confirmInfo = document.getElementById("confirmInfo");
 
 
 // ================================
-// IMAGE PREVIEW
+// IMAGE
 // ================================
 
 const picture = document.getElementById("picture");
@@ -67,6 +68,7 @@ const previewImage = document.getElementById("previewImage");
 startBtn.addEventListener("click", () => {
 
     welcomePage.classList.remove("active");
+
     formPage.classList.add("active");
 
 });
@@ -82,15 +84,18 @@ deptYes.addEventListener("change", () => {
 
 });
 
+
 deptNo.addEventListener("change", () => {
 
     departmentSection.style.display = "none";
 
-    document.querySelectorAll('input[name="department"]').forEach(box => {
+    document
+        .querySelectorAll('input[name="department"]')
+        .forEach(box => {
 
-        box.checked = false;
+            box.checked = false;
 
-    });
+        });
 
 });
 
@@ -114,14 +119,80 @@ picture.addEventListener("change", () => {
 
     const file = picture.files[0];
 
-    if(file){
+    if (file) {
 
         previewImage.src = URL.createObjectURL(file);
+
         previewImage.style.display = "block";
 
     }
 
 });
+
+
+// ================================
+// UPLOAD IMAGE TO IMAGEKIT
+// ================================
+
+async function uploadToImageKit(file) {
+
+    const authResponse = await fetch("/api/auth");
+
+    if (!authResponse.ok) {
+
+        throw new Error("Unable to authenticate with ImageKit.");
+
+    }
+
+    const authenticationParameters = await authResponse.json();
+
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    formData.append("fileName", file.name);
+
+    formData.append("publicKey", "public_FeXQ8Fb8Flx4jIwvVx9QwE0NpmI=");
+
+    formData.append(
+        "signature",
+        authenticationParameters.signature
+    );
+
+    formData.append(
+        "expire",
+        authenticationParameters.expire
+    );
+
+    formData.append(
+        "token",
+        authenticationParameters.token
+    );
+
+    formData.append(
+        "folder",
+        "/temms-members"
+    );
+
+    const uploadResponse = await fetch(
+        "https://upload.imagekit.io/api/v1/files/upload",
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+    if (!uploadResponse.ok) {
+
+        throw new Error("Image upload failed.");
+
+    }
+
+    const uploadResult = await uploadResponse.json();
+
+    return uploadResult.url;
+
+}
 
 
 // ================================
@@ -132,73 +203,168 @@ memberForm.addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
+
+    // ================================
+    // DEPARTMENT
+    // ================================
+
     let departmentValue = "";
+
 
     if (deptNo.checked) {
 
         departmentValue = "Member";
 
-    } else if (deptYes.checked) {
+    }
+
+    else if (deptYes.checked) {
 
         const selectedDepartments = [];
 
-        document.querySelectorAll('input[name="department"]:checked').forEach(dept => {
+        document
+            .querySelectorAll('input[name="department"]:checked')
+            .forEach(dept => {
 
-            selectedDepartments.push(dept.value);
+                selectedDepartments.push(dept.value);
 
-        });
+            });
+
 
         if (selectedDepartments.length === 0) {
 
             alert("Please select at least one department.");
+
             return;
 
         }
 
+
         departmentValue = selectedDepartments;
 
-    } else {
+    }
+
+    else {
 
         alert("Please indicate whether you belong to a department.");
+
         return;
 
     }
 
+
+    // ================================
+    // GET IMAGE
+    // ================================
+
+    const imageFile = picture.files[0];
+
+
+    if (!imageFile) {
+
+        alert("Please select a passport photograph.");
+
+        return;
+
+    }
+
+
+    // ================================
+    // DISABLE BUTTON
+    // ================================
+
     submitBtn.disabled = true;
-    submitBtn.textContent = "Submitting...";
+
+    submitBtn.textContent = "Uploading picture...";
+
+
     try {
 
-        await addDoc(collection(db, "members"), {
+        // ================================
+        // UPLOAD IMAGE
+        // ================================
 
-            fullName: document.getElementById("fullname").value.trim(),
+        const photoUrl = await uploadToImageKit(imageFile);
 
-            phone: document.getElementById("phone").value.trim(),
 
-            email: document.getElementById("email").value.trim(),
+        // ================================
+        // SAVE MEMBER
+        // ================================
 
-            dateOfBirth: document.getElementById("dob").value,
+        submitBtn.textContent = "Saving registration...";
 
-            gender: document.getElementById("gender").value,
 
-            address: document.getElementById("address").value.trim(),
+        await addDoc(
+            collection(db, "members"),
+            {
 
-            department: departmentValue,
+                fullName:
+                    document
+                        .getElementById("fullname")
+                        .value
+                        .trim(),
 
-            registeredAt: serverTimestamp()
+                phone:
+                    document
+                        .getElementById("phone")
+                        .value
+                        .trim(),
 
-        });
+                email:
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim(),
 
-        // Show success page
+                dateOfBirth:
+                    document
+                        .getElementById("dob")
+                        .value,
+
+                gender:
+                    document
+                        .getElementById("gender")
+                        .value,
+
+                address:
+                    document
+                        .getElementById("address")
+                        .value
+                        .trim(),
+
+                department:
+                    departmentValue,
+
+                photoUrl:
+                    photoUrl,
+
+                registeredAt:
+                    serverTimestamp()
+
+            }
+        );
+
+
+        // ================================
+        // SUCCESS PAGE
+        // ================================
+
         formPage.classList.remove("active");
+
         successPage.classList.add("active");
 
-    } catch (error) {
 
-        console.error(error);
+    }
 
-        alert("Registration failed. Please check your internet connection and try again.");
+    catch (error) {
+
+        console.error("Registration error:", error);
+
+        alert(
+            "Registration failed. Please check your internet connection and try again."
+        );
 
         submitBtn.disabled = false;
+
         submitBtn.textContent = "Submit";
 
     }
@@ -215,14 +381,17 @@ registerAgain.addEventListener("click", () => {
     memberForm.reset();
 
     previewImage.src = "";
+
     previewImage.style.display = "none";
 
     departmentSection.style.display = "none";
 
     submitBtn.textContent = "Submit";
+
     submitBtn.disabled = true;
 
     successPage.classList.remove("active");
+
     welcomePage.classList.add("active");
 
 });

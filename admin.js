@@ -1,3 +1,8 @@
+// ================================
+// TEMMS - ADMIN.JS
+// Church Member Admin Dashboard
+// ================================
+
 import { db } from "./firebase.js";
 
 import {
@@ -7,93 +12,270 @@ import {
     doc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+
 const memberTable = document.getElementById("memberTable");
+
 const totalMembers = document.getElementById("totalMembers");
+
 const search = document.getElementById("search");
 
+
 let members = [];
+
+
+// ================================
+// LOAD MEMBERS
+// ================================
 
 async function loadMembers() {
 
     memberTable.innerHTML = "";
 
-    const querySnapshot = await getDocs(collection(db, "members"));
+    try {
 
-    members = [];
+        const querySnapshot =
+            await getDocs(
+                collection(db, "members")
+            );
 
-    querySnapshot.forEach((document) => {
 
-        members.push({
-            id: document.id,
-            ...document.data()
+        members = [];
+
+
+        querySnapshot.forEach((document) => {
+
+            members.push({
+
+                id: document.id,
+
+                ...document.data()
+
+            });
+
         });
 
-    });
 
-    displayMembers(members);
+        displayMembers(members);
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Error loading members:",
+            error
+        );
+
+        memberTable.innerHTML = `
+            <tr>
+                <td colspan="10">
+                    Unable to load members.
+                </td>
+            </tr>
+        `;
+
+    }
 
 }
 
-function displayMembers(data){
+
+// ================================
+// DISPLAY MEMBERS
+// ================================
+
+function displayMembers(data) {
 
     memberTable.innerHTML = "";
 
-    totalMembers.textContent = data.length;
+    totalMembers.textContent =
+        data.length;
 
-    data.forEach(member=>{
+
+    data.forEach(member => {
+
+
+        const department =
+            Array.isArray(member.department)
+
+                ? member.department.join(", ")
+
+                : (member.department || "Member");
+
+
+        const photo =
+            member.photoUrl
+
+                ? `
+                    <img
+                        src="${member.photoUrl}"
+                        alt="Passport"
+                        style="
+                            width:60px;
+                            height:60px;
+                            object-fit:cover;
+                            border-radius:50%;
+                        "
+                    >
+                  `
+
+                : "No Photo";
+
 
         memberTable.innerHTML += `
-        <tr>
 
-        <td>${member.fullName}</td>
+            <tr>
 
-        <td>${member.phone}</td>
+                <td>
+                    ${photo}
+                </td>
 
-        <td>${member.department}</td>
 
-        <td>${member.gender}</td>
+                <td>
+                    ${member.fullName || ""}
+                </td>
 
-        <td>
 
-        <button onclick="deleteMember('${member.id}')">
+                <td>
+                    ${member.phone || ""}
+                </td>
 
-        Delete
 
-        </button>
+                <td>
+                    ${member.email || ""}
+                </td>
 
-        </td>
 
-        </tr>
+                <td>
+                    ${member.dateOfBirth || ""}
+                </td>
+
+
+                <td>
+                    ${member.gender || ""}
+                </td>
+
+
+                <td>
+                    ${member.address || ""}
+                </td>
+
+
+                <td>
+                    ${department}
+                </td>
+
+
+                <td>
+
+                    <button
+                        onclick="deleteMember('${member.id}')"
+                    >
+                        Delete
+                    </button>
+
+                </td>
+
+            </tr>
+
         `;
 
     });
 
 }
 
-window.deleteMember = async function(id){
 
-    if(confirm("Delete this member?")){
+// ================================
+// DELETE MEMBER
+// ================================
 
-        await deleteDoc(doc(db,"members",id));
+window.deleteMember = async function(id) {
 
-        loadMembers();
+    if (!confirm("Delete this member?")) {
+
+        return;
 
     }
 
-}
 
-search.addEventListener("input",()=>{
+    try {
 
-    const value = search.value.toLowerCase();
+        await deleteDoc(
+            doc(db, "members", id)
+        );
 
-    const filtered = members.filter(member=>
 
-        member.fullName.toLowerCase().includes(value)
+        await loadMembers();
 
-    );
+    }
 
-    displayMembers(filtered);
+    catch (error) {
 
-});
+        console.error(
+            "Delete error:",
+            error
+        );
+
+        alert(
+            "Unable to delete this member."
+        );
+
+    }
+
+};
+
+
+// ================================
+// SEARCH
+// ================================
+
+search.addEventListener(
+    "input",
+    () => {
+
+        const value =
+            search.value
+                .toLowerCase()
+                .trim();
+
+
+        const filtered =
+            members.filter(member => {
+
+                const name =
+                    (
+                        member.fullName || ""
+                    ).toLowerCase();
+
+
+                const phone =
+                    (
+                        member.phone || ""
+                    ).toLowerCase();
+
+
+                const email =
+                    (
+                        member.email || ""
+                    ).toLowerCase();
+
+
+                return (
+                    name.includes(value) ||
+                    phone.includes(value) ||
+                    email.includes(value)
+                );
+
+            });
+
+
+        displayMembers(filtered);
+
+    }
+);
+
+
+// ================================
+// START
+// ================================
 
 loadMembers();
